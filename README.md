@@ -27,7 +27,7 @@ You will need:
 - **MySQL Server**: Install and configure MySQL on your system.
 - **Alpha Vantage API Key**: Get your API key [here](https://www.alphavantage.co/support/#api-key).
 
-### Installation
+## 1. Installation
 
 ```bash
 # 1. Clone the Repository
@@ -39,7 +39,7 @@ cd Investment-Dashboard
 ```bash
 pip install -r requirements.txt
 ```
-# 3. Setting Up the Database
+## 3. Setting Up the Database
 
 ## To set up the MySQL database required for this project, follow these steps:
 
@@ -73,15 +73,15 @@ Create a .env file in the project directory with the following content:
 # DB_NAME=investment
 ```
 
-# 4. Run the Data Extraction Script
+## 4. Run the Data Extraction Script
 ```bash
 python fetch_portfolio_data.py
 ```
 
-# 5. Launch Tableau Dashboard
+## 5. Launch Tableau Dashboard
 Open the Tableau workbook in the `tableau_dashboard` folder.
 
-# 6. Usage
+## 6. Usage
 ### Once you have the dashboard open in Tableau, you can:
 
 - Use filters to adjust the time frame and view data for specific periods.
@@ -90,7 +90,7 @@ Open the Tableau workbook in the `tableau_dashboard` folder.
 ## Contributing
 We welcome contributions to improve this project! Feel free to: irmuun8881@gmail.com
 
-# 7. Fork the repository.
+## 7. Fork the repository.
 - Create a new branch
 ```bash
 git checkout -b feature/YourFeature
@@ -104,8 +104,8 @@ git commit -m "Add YourFeature"
 git push origin feature/YourFeature
 ```
 - Open a pull request.
-# 8. License
+## 8. License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-# 9. Support
+## 9. Support
 If this project helps you, consider starring the repository on GitHub!# Investment-Dashboard
