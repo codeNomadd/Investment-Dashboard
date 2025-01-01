@@ -39,8 +39,30 @@ cd Investment-Dashboard
 ```bash
 pip install -r requirements.txt
 ```
+# 3. Setting Up the Database
 
-# 3. Configure Environment Variables
+## To set up the MySQL database required for this project, follow these steps:
+
+1. **Access MySQL:**
+   - Open your terminal or command prompt.
+   - Log in to MySQL using the following command:
+     ```bash
+     mysql -u root -p
+     ```
+   - Enter your MySQL root password when prompted.
+
+2. **Create the Database:**
+   - Create a new database named `investment` by running:
+     ```sql
+     CREATE DATABASE investment;
+     ```
+   - Verify the database creation by listing all databases:
+     ```sql
+     SHOW DATABASES;
+     ```
+   - You should see `investment` listed among the databases.
+
+## Configure Environment Variables
 
 Create a .env file in the project directory with the following content:
 ```bash
