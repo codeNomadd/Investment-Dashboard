@@ -35,7 +35,7 @@ git clone https://github.com/irmuun8881/Investment-Dashboard.git
 cd Investment-Dashboard
 ```
 
-# 2. Install Dependencies
+## 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
