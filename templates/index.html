@@ -1,6 +1,28 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>Welcome to the Investment Dashboard</h1>
-<p>Use the navigation bar to view your portfolio or manage your stocks.</p>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-header">Portfolio</div>
+        <div class="card-body">
+          <h5 class="card-title">View Your Portfolio</h5>
+          <p class="card-text">Track and manage your investments in one place.</p>
+          <a href="/portfolio" class="btn btn-light">Go to Portfolio</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header">Update Stocks</div>
+        <div class="card-body">
+          <h5 class="card-title">Update Stock Data</h5>
+          <p class="card-text">Keep your portfolio up-to-date with the latest stock prices.</p>
+          <a href="#" class="btn btn-light">Update Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

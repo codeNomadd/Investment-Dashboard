@@ -1,21 +1,37 @@
-from flask import Flask
+from flask import Flask, render_template
 from routes.api import app as api_app
+from mysql.connector import connect, Error
+import os
 
-# Initialize Flask app
 app = Flask(__name__)
-
-# Register routes
 app.register_blueprint(api_app)
 
-# Default route for '/'
-@app.route('/')
-def home():
-    return "Welcome to the Investment Dashboard API! Use the available endpoints."
+def get_db_connection():
+    return connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
 
-# Optional: Handle favicon request
-@app.route('/favicon.ico')
-def favicon():
-    return '', 204  # Return an empty response with a 204 (No Content) status code
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/portfolio')
+def portfolio():
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM portfolios")
+        portfolio_data = cursor.fetchall()
+        return render_template('portfolio.html', portfolio=portfolio_data)
+    except Error as e:
+        return f"Error fetching portfolio: {e}", 500
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
