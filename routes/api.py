@@ -4,6 +4,7 @@ from stock_data import update_stock_data
 import os
 
 app = Blueprint('api', __name__)
+SYMBOLS = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
 
 def get_db_connection():
     return connect(
@@ -61,6 +62,20 @@ def get_portfolio():
         if connection:
             cursor.close()
             connection.close()
+
+@app.route('/update-stocks', methods=['GET'])
+def update_stocks_ui():
+    """
+    Trigger stock data updates manually through the UI.
+    """
+    symbols = SYMBOLS  # Replace SYMBOLS with your list of stock symbols
+    try:
+        update_stock_data(symbols)
+        return "Stock data updated successfully! Go back to the <a href='/'>homepage</a>.", 200
+    except Exception as e:
+        return f"Error updating stock data: {str(e)}", 500
+
+
 
 @app.route('/portfolio/<int:portfolio_id>', methods=['PUT'])
 def update_portfolio(portfolio_id):
@@ -125,3 +140,22 @@ def update_stocks():
 
     update_stock_data(symbols)
     return jsonify({'message': 'Stock data update triggered'}), 200
+
+@app.route('/historical-data/<string:symbol>', methods=['GET'])
+def get_historical_data(symbol):
+    """
+    Retrieve historical data for a specific stock symbol from the database.
+    """
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+        query = f"SELECT timestamp, high FROM {symbol}_stock ORDER BY timestamp ASC"
+        cursor.execute(query)
+        data = cursor.fetchall()
+        return jsonify(data), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()

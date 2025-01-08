@@ -20,10 +20,16 @@ def index():
 
 @app.route('/portfolio')
 def portfolio():
+    user_id = request.args.get('user_id')
+
+    if not user_id:
+        return render_template("portfolio.html", portfolio=[])
+
     try:
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM portfolios")
+        query = "SELECT * FROM portfolios WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
         portfolio_data = cursor.fetchall()
         return render_template('portfolio.html', portfolio=portfolio_data)
     except Error as e:
@@ -32,6 +38,7 @@ def portfolio():
         if connection:
             cursor.close()
             connection.close()
+
 
 if __name__ == "__main__":
     app.run(debug=True)
