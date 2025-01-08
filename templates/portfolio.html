@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Portfolio</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Stock Symbol</th>
+      <th>Quantity</th>
+      <th>Purchase Price</th>
+      <th>Total Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for stock in portfolio %}
+    <tr>
+      <td>{{ stock.id }}</td>
+      <td>{{ stock.symbol }}</td>
+      <td>{{ stock.quantity }}</td>
+      <td>{{ stock.purchase_price }}</td>
+      <td>{{ stock.quantity * stock.purchase_price }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
