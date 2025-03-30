@@ -1,111 +1,163 @@
-# Investment Dashboard Project
+# Stock Market API
 
-![Investment Dashboard](tableau_dashboard/Tableau%20Dashboard.png "Investment Dashboard")
+A RESTful API service for fetching and managing stock market data using the Alpha Vantage API. This service provides endpoints to track stock prices, volumes, and historical data for multiple stock symbols.
 
-## Overview
+## Features
 
-Welcome to the Investment Dashboard Project, an interactive platform designed to provide a comprehensive view of stock market investments. This project integrates Python-based data extraction and storage with Tableau's powerful visualization capabilities. It is perfect for investors and financial analysts seeking actionable insights into their portfolios.
+- Real-time stock data fetching from Alpha Vantage API
+- MySQL database storage for historical data
+- RESTful API endpoints for data access
+- Support for multiple stock symbols
+- Automatic data updates
 
-### Why This Project?
+## Prerequisites
 
-In today's financial world, data is the foundation of informed decisions. The Investment Dashboard Project simplifies data collection, management, and visualization, offering users a streamlined tool to analyze their investments and make data-driven choices.
+- Python 3.x
+- MySQL Server
+- Alpha Vantage API Key
 
-### Key Features
+## Installation
 
-- **Automated Data Extraction**: Fetch daily stock data (high prices and volumes) for multiple symbols using the Alpha Vantage API.
-- **Database Management**: Store and update stock data in a MySQL database with table creation and automatic data updates.
-- **Portfolio Analytics**: Use Tableau to track and analyze portfolio performance and visualize key metrics.
-- **Customizability**: Add your own stock symbols to the project for personalized insights.
-
-## Getting Started
-
-### Prerequisites
-
-You will need:
-- **Python 3.x**: Download Python [here](https://www.python.org/downloads/).
-- **Tableau**: Either Tableau Desktop or Tableau Public ([Download Tableau](https://www.tableau.com/products/desktop/download)).
-- **MySQL Server**: Install and configure MySQL on your system.
-- **Alpha Vantage API Key**: Get your API key [here](https://www.alphavantage.co/support/#api-key).
-
-## 1. Installation
-
+1. Clone the repository:
 ```bash
-# 1. Clone the Repository
-git clone https://github.com/irmuun8881/Investment-Dashboard.git
-cd Investment-Dashboard
+git clone https://github.com/yourusername/stock-api.git
+cd stock-api
 ```
 
-## 2. Install Dependencies
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-## 3. Setting Up the Database
 
-## To set up the MySQL database required for this project, follow these steps:
-
-1. **Access MySQL:**
-   - Open your terminal or command prompt.
-   - Log in to MySQL using the following command:
-     ```bash
-     mysql -u root -p
-     ```
-   - Enter your MySQL root password when prompted.
-
-2. **Create the Database:**
-   - Create a new database named `investment` by running:
-     ```sql
-     CREATE DATABASE investment;
-     ```
-   - Verify the database creation by listing all databases:
-     ```sql
-     SHOW DATABASES;
-     ```
-   - You should see `investment` listed among the databases.
-
-## Configure Environment Variables
-
-Create a .env file in the project directory with the following content:
-```bash
-# API_KEY=your_alpha_vantage_api_key
-# DB_HOST=localhost
-# DB_USER=your_mysql_username
-# DB_PASSWORD=your_mysql_password
-# DB_NAME=investment
+4. Set up MySQL database:
+```sql
+CREATE DATABASE investment;
 ```
 
-## 4. Run the Data Extraction Script
-```bash
-python fetch_portfolio_data.py
+5. Configure environment variables:
+Create a `.env` file in the project root with the following content:
+```env
+# Alpha Vantage API Configuration
+ALPHA_VANTAGE_API_KEY=your_api_key_here
+
+# MySQL Database Configuration
+DB_HOST=localhost
+DB_USER=your_mysql_username
+DB_PASSWORD=your_mysql_password
+DB_NAME=investment
+
+# Stock Symbols to Track (comma-separated)
+STOCK_SYMBOLS=AAPL,MSFT,GOOGL,AMZN,META
 ```
 
-## 5. Launch Tableau Dashboard
-Open the Tableau workbook in the `tableau_dashboard` folder.
+## Project Structure
 
-## 6. Usage
-### Once you have the dashboard open in Tableau, you can:
+```
+stock_api/
+├── app/                    # Main application package
+│   ├── models/            # Database models
+│   ├── services/          # API endpoints and business logic
+│   ├── utils/             # Utility functions
+│   └── __init__.py        # App initialization
+├── tests/                 # Test files
+├── .env                   # Environment variables
+├── requirements.txt       # Python dependencies
+└── run.py                # Application entry point
+```
 
-- Use filters to adjust the time frame and view data for specific periods.
-- Hover over charts to get detailed insights.
-- Analyze individual stock performance and portfolio growth trends.
+## API Endpoints
+
+### GET /api/stocks
+Returns a list of all tracked stock symbols.
+
+**Response:**
+```json
+{
+    "symbols": ["AAPL", "MSFT", "GOOGL", "AMZN", "META"]
+}
+```
+
+### GET /api/stocks/<symbol>
+Fetches and updates data for a specific stock symbol.
+
+**Parameters:**
+- `symbol`: Stock symbol (e.g., AAPL, MSFT)
+
+**Response:**
+```json
+{
+    "message": "Data updated for AAPL"
+}
+```
+
+### POST /api/stocks/update
+Updates data for all tracked stock symbols.
+
+**Response:**
+```json
+{
+    "message": "All stocks updated successfully"
+}
+```
+
+## Running the Application
+
+1. Make sure your virtual environment is activated
+2. Start the application:
+```bash
+python run.py
+```
+
+The API will be available at `http://localhost:5000`
+
+## Database Schema
+
+### Stocks Table
+```sql
+CREATE TABLE stocks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    symbol VARCHAR(10) NOT NULL,
+    date DATE NOT NULL,
+    high_price DECIMAL(10,2) NOT NULL,
+    volume BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_stock_date (symbol, date)
+);
+```
+
+## Development
+
+### Running Tests
+```bash
+pytest
+```
+
+### Adding New Features
+1. Create a new branch: `git checkout -b feature/your-feature`
+2. Make your changes
+3. Run tests: `pytest`
+4. Commit your changes: `git commit -m "Add your feature"`
+5. Push to your branch: `git push origin feature/your-feature`
+6. Create a Pull Request
+
 ## Contributing
-We welcome contributions to improve this project! Feel free to: irmuun8881@gmail.com
 
-## 7. Fork the repository.
-- Create a new branch
-```bash
-git checkout -b feature/YourFeature
-```
-- Commit your changes 
-```bash
-git commit -m "Add YourFeature"
-```
-- Push to the branch 
-```bash
-git push origin feature/YourFeature
-```
-- Open a pull request.
-## 8. License
-This project is licensed under the MIT License. See the LICENSE file for details.
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
 
-## 9. Support
-If this project helps you, consider starring the repository on GitHub!# Investment-Dashboard
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers. 
