@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from mysql.connector import connect, Error
 import os
 from dotenv import load_dotenv
@@ -34,6 +34,10 @@ def create_app(config_object=None):
             password=app.config.get("DB_PASSWORD"),
             database=app.config.get("DB_NAME")
         )
+    
+    @app.route('/health')
+    def health_check():
+        return jsonify({"status": "healthy"}), 200
     
     @app.route('/')
     def index():
