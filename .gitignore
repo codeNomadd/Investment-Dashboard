@@ -29,3 +29,23 @@ Thumbs.db
 *.log
 
 venv_mysql/
+
+# Docker
+.dockerignore
+.git
+.gitignore
+.env
+*.pyc
+__pycache__
+.pytest_cache
+logs/
+venv/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+.idea/
+.vscode/
+*.swp
+*.swo
