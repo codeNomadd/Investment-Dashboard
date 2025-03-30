@@ -9,74 +9,130 @@ A streamlined platform for visualizing stock market data with ease. This project
 
 ![Investment Dashboard](dashboard/Tableau%20Dashboard.png)
 
-## Overview
+## Dashboard Components
 
-This platform simplifies stock market data visualization by:
-- Providing clean, interactive charts for stock price trends
-- Offering easy-to-understand market indicators
-- Enabling quick comparison between different stocks
-- Supporting real-time data updates from Alpha Vantage API
+### 1. Portfolio Performance Timeline
+- **Interactive time series visualization** tracking total portfolio value (2022-2024)
+- Milestone annotations highlight key events and decisions
+- Helps identify long-term trends and pattern recognition
+- **Value Add**: Enables investors to correlate market events with portfolio performance
 
-## Features
+### 2. Asset Allocation Overview
+- **Dynamic pie chart** displaying current portfolio composition
+- Color-coded segments with percentage breakdowns
+- Hover tooltips reveal detailed asset information
+- **Value Add**: Quick assessment of portfolio diversification and rebalancing needs
 
-- **Simple Data Visualization**: Clean, interactive charts showing stock price movements
-- **Real-time Updates**: Live data fetching from Alpha Vantage
-- **Easy Comparison**: Compare multiple stocks side by side
-- **Key Metrics Display**: View important stock metrics at a glance
-- **User-friendly Interface**: Intuitive dashboard for easy navigation
+### 3. Relative Performance Index
+- **Normalized performance chart** comparing top 5 holdings
+- Baseline-adjusted growth trajectories
+- Custom date range selection
+- **Value Add**: Easily identify outperforming and underperforming assets
 
-## Quick Start
+### 4. Monthly Performance Analysis
+- **Waterfall chart** showing month-over-month gains/losses
+- Color-coded bars (green for gains, red for losses)
+- Cumulative trend line overlay
+- **Value Add**: Track investment momentum and identify seasonal patterns
 
-1. Clone the repository:
-```bash
-git clone https://github.com/codeNomadd/Investment-Dashboard.git
-cd Investment-Dashboard
-```
+### 5. Smart Asset Legend
+- Interactive sidebar with asset details
+- Real-time price updates and daily changes
+- Brand logos for quick visual recognition
+- **Value Add**: Consolidated view of key metrics for each holding
 
-2. Set up your environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
+### 6. Advanced Filtering
+- Flexible date range selection
+- Asset-specific filtering capabilities
+- Market cap and sector filters
+- **Value Add**: Focused analysis of specific time periods or asset groups
 
-3. Configure your environment variables in `.env`:
-```
-ALPHA_VANTAGE_API_KEY=your_api_key_here
-FLASK_APP=run.py
-FLASK_ENV=development
-```
+## Dashboard Insights
 
-4. Run the application:
-```bash
-python run.py
-```
+The dashboard is designed to answer critical investment questions:
+- How is my portfolio performing over time?
+- Am I properly diversified across assets?
+- Which holdings are driving returns?
+- What are my monthly investment patterns?
+- Where should I consider rebalancing?
 
-5. Open your browser and navigate to `http://localhost:5000`
+## Visualization Enhancements
 
-## Environment Setup
-
-Required environment variables:
-- `ALPHA_VANTAGE_API_KEY`: Your Alpha Vantage API key
-- `FLASK_APP`: Application entry point
-- `FLASK_ENV`: Application environment (development/production)
-
-## Dependencies
-
-Core packages:
-- Flask: Web framework
-- Pandas & NumPy: Data processing
-- Celery & Redis: Background task processing
-- SQLAlchemy: Database management
-
-## Dashboard Features
-
-The dashboard provides:
+### Current Features
 - Real-time stock price charts
 - Price trend indicators
 - Volume analysis
 - Simple moving averages
 - Basic technical indicators
+
+### Recommended Improvements
+1. **Technical Analysis**
+   - Add RSI (Relative Strength Index) overlay
+   - Include MACD (Moving Average Convergence Divergence)
+   - Bollinger Bands for volatility tracking
+
+2. **Risk Metrics**
+   - Value at Risk (VaR) calculations
+   - Beta coefficients for each asset
+   - Correlation matrix heatmap
+
+3. **UX Enhancements**
+   - Dark/Light theme toggle
+   - Customizable chart layouts
+   - Export functionality for reports
+   - Mobile-responsive design
+
+4. **Advanced Analytics**
+   - Monte Carlo simulations
+   - Automated trend detection
+   - Custom alert thresholds
+
+## Alternative Implementation
+
+This dashboard can be recreated using modern Python tools:
+
+### Plotly Implementation
+```python
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+# Create interactive dashboard
+fig = make_subplots(
+    rows=3, cols=2,
+    specs=[[{"type": "scatter"}, {"type": "pie"}],
+           [{"type": "scatter"}, {"type": "bar"}],
+           [{"colspan": 2}, None]],
+    subplot_titles=("Portfolio Timeline", "Asset Allocation",
+                   "Performance Index", "Monthly Analysis",
+                   "Technical Indicators")
+)
+```
+
+### Streamlit Alternative
+```python
+import streamlit as st
+import plotly.express as px
+
+# Create interactive components
+st.title("Investment Dashboard")
+date_range = st.date_input("Select Date Range")
+selected_assets = st.multiselect("Select Assets")
+
+# Dynamic visualizations
+col1, col2 = st.columns(2)
+with col1:
+    st.plotly_chart(timeline_chart)
+with col2:
+    st.plotly_chart(allocation_chart)
+```
+
+## Dependencies
+
+Core packages:
+- Pandas & NumPy: Data processing
+- Plotly/Streamlit: Interactive visualizations
+- SQLAlchemy: Database management
+- Alpha Vantage API: Real-time data
 
 ## 📅 Upcoming Features
 
