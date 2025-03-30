@@ -1,13 +1,69 @@
-# Stock Data Visualization Platform
+# Stock Data Fetcher
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
 
-A streamlined platform for visualizing stock market data with ease. This project focuses on making stock data accessible and visually intuitive, perfect for quick market analysis and trend visualization.
+A simple Python script to fetch stock market data from Alpha Vantage API and store it in MySQL for Tableau visualization.
 
 ## Dashboard Preview
 
 ![Investment Dashboard](dashboard/Tableau%20Dashboard.png)
+
+## Project Overview
+
+This project consists of two main components:
+1. A Python script that fetches daily stock data and stores it in MySQL
+2. A Tableau dashboard for visualizing the stored data
+
+## Quick Setup
+
+1. Install MySQL and create a database:
+```sql
+CREATE DATABASE stocks;
+```
+
+2. Install Python dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Configure environment variables in `.env`:
+```env
+# Alpha Vantage API Configuration
+ALPHA_VANTAGE_API_KEY=your_api_key_here
+
+# MySQL Database Configuration
+DB_HOST=localhost
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_NAME=stocks
+
+# Stock Symbols to Track
+STOCK_SYMBOLS=AAPL,MSFT,GOOGL,AMZN
+```
+
+4. Run the script:
+```bash
+python stock_fetcher.py
+```
+
+## Data Structure
+
+The script creates a `stocks` table with the following schema:
+```sql
+CREATE TABLE stocks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    symbol VARCHAR(10) NOT NULL,
+    date DATE NOT NULL,
+    open_price FLOAT NOT NULL,
+    high_price FLOAT NOT NULL,
+    low_price FLOAT NOT NULL,
+    close_price FLOAT NOT NULL,
+    volume BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_stock_date (symbol, date)
+);
+```
 
 ## Dashboard Components
 
@@ -56,108 +112,31 @@ The dashboard is designed to answer critical investment questions:
 - What are my monthly investment patterns?
 - Where should I consider rebalancing?
 
-## Visualization Enhancements
-
-### Current Features
+## Current Features
 - Real-time stock price charts
 - Price trend indicators
 - Volume analysis
-- Simple moving averages
 - Basic technical indicators
 
-### Recommended Improvements
-1. **Technical Analysis**
-   - Add RSI (Relative Strength Index) overlay
-   - Include MACD (Moving Average Convergence Divergence)
-   - Bollinger Bands for volatility tracking
+## Automation
 
-2. **Risk Metrics**
-   - Value at Risk (VaR) calculations
-   - Beta coefficients for each asset
-   - Correlation matrix heatmap
+To automatically update stock data daily, add a cron job:
 
-3. **UX Enhancements**
-   - Dark/Light theme toggle
-   - Customizable chart layouts
-   - Export functionality for reports
-   - Mobile-responsive design
-
-4. **Advanced Analytics**
-   - Monte Carlo simulations
-   - Automated trend detection
-   - Custom alert thresholds
-
-## Alternative Implementation
-
-This dashboard can be recreated using modern Python tools:
-
-### Plotly Implementation
-```python
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-
-# Create interactive dashboard
-fig = make_subplots(
-    rows=3, cols=2,
-    specs=[[{"type": "scatter"}, {"type": "pie"}],
-           [{"type": "scatter"}, {"type": "bar"}],
-           [{"colspan": 2}, None]],
-    subplot_titles=("Portfolio Timeline", "Asset Allocation",
-                   "Performance Index", "Monthly Analysis",
-                   "Technical Indicators")
-)
-```
-
-### Streamlit Alternative
-```python
-import streamlit as st
-import plotly.express as px
-
-# Create interactive components
-st.title("Investment Dashboard")
-date_range = st.date_input("Select Date Range")
-selected_assets = st.multiselect("Select Assets")
-
-# Dynamic visualizations
-col1, col2 = st.columns(2)
-with col1:
-    st.plotly_chart(timeline_chart)
-with col2:
-    st.plotly_chart(allocation_chart)
+```bash
+# Run at 6 PM every weekday
+0 18 * * 1-5 cd /path/to/project && python stock_fetcher.py
 ```
 
 ## Dependencies
 
-Core packages:
-- Pandas & NumPy: Data processing
-- Plotly/Streamlit: Interactive visualizations
-- SQLAlchemy: Database management
-- Alpha Vantage API: Real-time data
-
-## 📅 Upcoming Features
-
-- [ ] Interactive candlestick charts with technical indicators
-- [ ] Portfolio tracking and performance analytics
-- [ ] Custom watchlist creation
-- [ ] Export data to CSV/Excel
-- [ ] Mobile-responsive design
-- [ ] Dark/Light theme toggle
-- [ ] Email alerts for price movements
-- [ ] Social sharing capabilities
-
-## Contributing
-
-Feel free to contribute to this project by:
-1. Forking the repository
-2. Creating a feature branch
-3. Submitting a pull request
+- Python 3.x
+- MySQL 8.0+
+- Alpha Vantage API key
+- Required Python packages:
+  - requests
+  - mysql-connector-python
+  - python-dotenv
 
 ## License
 
-This project is licensed under the MIT License - see LICENSE.txt for details.
-
-## Acknowledgments
-
-- Data provided by Alpha Vantage API
-- Built with Flask and modern Python libraries
-- Visualization powered by modern charting libraries 
+This project is licensed under the MIT License - see LICENSE.txt for details. 
